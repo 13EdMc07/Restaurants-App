@@ -8,39 +8,12 @@ var path = require("path");
 var app = express();
 var PORT = process.env.PORT || 3000;
 
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 var reservations = [];
 var waitlist = [];
-
-//pushes the information from form
-// if (reservations.length <= 5) {
-//     reservations.push();
-// } else {
-//     waitlist.push();
-// }
-
-// $("#submit").on("click", function(event) {
-//     event.preventDefault();
-//     var newReservation = {
-//       name: $("#name").val().trim(),
-//       phoneNumber: $("#phone-number").val().trim(),
-//       email: $("#email").val().trim(),
-//       uniqueID: $("#unique-id").val().trim()
-//     };
-
-//     if (reservations.length <= 5) {
-//         $.post("/api/tables", newReservation)
-//         .then(function(data) {
-//             console.log("add.html", data);
-//             alert("Adding character...");
-//         });
-//     } else {
-//         $.post("/api/waitlist", newReservation)
-//         .then(function(data) {
-//             console.log("add.html", data);
-//             alert("Adding character...");
-//         });
-//     }
-// });
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
@@ -55,16 +28,21 @@ app.get("/reservations", function(req, res) {
     res.sendFile(path.join(__dirname, "reservations.html"));
 });  
 
+app.get("/api/tables", function(req, res) {
+    return res.json(reservations);
+});
+
 app.post("/api/tables", function(req, res) {
-    var newTable = req.body;
-    reservations.push(newTable);
-    res.json(newTable);
+    var newReservation = req.body;
+    console.log(newReservation);
+    reservations.push(newReservation);
+    res.json(newReservation);
 })
 
 app.post("/api/waitlist", function(req, res) {
-    var newTable = req.body;
-    waitlist.push(newTable);
-    res.json(newTable);
+    var newReservation = req.body;
+    waitlist.push(newReservation);
+    res.json(newReservation);
 })
 
 app.listen(PORT, function() {

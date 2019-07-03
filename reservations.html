@@ -45,8 +45,28 @@
               <label for="reservation_email">Email</label>
               <input type="email" class="form-control" id="reservation_email" placeholder="Email">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>
+
+    <script>
+    $("form").on("submit", function(event) {
+        event.preventDefault();
+        var newReservation = {
+          name: $("#reservation_name").val().trim(),
+          phoneNumber: $("#reservation_phone").val().trim(),
+          email: $("#reservation_email").val().trim()
+        };
+
+          $.post("/api/tables", newReservation)
+            .then(function(data) {
+                console.log("add.html", data);
+            });
+          // $.post("/api/waitlist", newReservation)
+          //   .then(function(data) {
+          //       console.log("add.html", data);
+          //   });
+    });
+    </script>
 </body>
 </html>
